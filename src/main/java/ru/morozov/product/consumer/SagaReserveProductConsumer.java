@@ -39,7 +39,7 @@ public class SagaReserveProductConsumer implements MessageListener {
 
         try {
             SagaReserveProductMsg msg = (SagaReserveProductMsg) objectMessage.getObject();
-            productService.reserve(msg.getProductsQnt());
+            productService.reserve(msg.getOrderId(), msg.getProductsQnt());
         } catch (Exception e) {
             log.error("Failed to save products", e);
         }

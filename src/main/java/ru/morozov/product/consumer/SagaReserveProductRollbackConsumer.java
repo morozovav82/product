@@ -39,7 +39,7 @@ public class SagaReserveProductRollbackConsumer implements MessageListener {
 
         try {
             SagaReserveProductRollbackMsg msg = (SagaReserveProductRollbackMsg) objectMessage.getObject();
-            productService.release(msg.getProductsQnt());
+            productService.release(msg.getOrderId(), msg.getProductsQnt());
         } catch (Exception e) {
             log.error("Failed to save products", e);
         }

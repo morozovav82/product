@@ -6,12 +6,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import ru.morozov.messages.NotEnoughProductMsg;
+import ru.morozov.messages.ProductReservedMsg;
 import ru.morozov.product.ProductMapper;
 import ru.morozov.product.dto.NewProductDto;
 import ru.morozov.product.dto.ProductDto;
 import ru.morozov.product.entity.Product;
 import ru.morozov.product.entity.Status;
 import ru.morozov.product.exceptions.NotFoundException;
+import ru.morozov.product.producer.ProductProducer;
 import ru.morozov.product.repo.ProductRepository;
 
 import java.util.Map;
@@ -24,6 +27,7 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductProducer productProducer;
 
     public ProductDto create(NewProductDto product) {
         Assert.hasText(product.getName(), "Empty name");
@@ -90,18 +94,22 @@ public class ProductService {
         }
     }
 
-    public void reserve(Map<Long, Integer> productsQnt) {
-        productsQnt.entrySet().forEach(i -> reserve(i.getKey(), i.getValue()));
+    public void reserve(Long orderId, Map<Long, Integer> productsQnt) {
+        productsQnt.entrySet().forEach(i -> reserve(orderId, i.getKey(), i.getValue()));
+        productProducer.sendProductReservedMessage(new ProductReservedMsg(orderId));
     }
 
-    public ProductDto reserve(Long id, Integer qnt) {
+    private ProductDto reserve(Long orderId, Long id, Integer qnt) {
         Assert.notNull(qnt, "Qnt is null");
         Assert.isTrue(qnt.intValue() > 0, "Wrong qnt");
 
         Optional<Product> res = productRepository.findById(id);
         if (res.isPresent()) {
             Product product = res.get();
-            Assert.isTrue(product.getFreeQnt() >= qnt, "Not enough free products. ProductID=" + product.getId() + ", FreeQnt=" + product.getFreeQnt());
+            if (product.getFreeQnt() >= qnt) {
+                productProducer.sendNotEnoughProductMessage(new NotEnoughProductMsg(orderId));
+                throw new IllegalArgumentException("Not enough free products. ProductID=" + product.getId() + ", FreeQnt=" + product.getFreeQnt());
+            }
 
             product.setReserved(product.getReserved() + qnt);
             productRepository.save(product);
@@ -112,11 +120,11 @@ public class ProductService {
         }
     }
 
-    public void release(Map<Long, Integer> productsQnt) {
-        productsQnt.entrySet().forEach(i -> release(i.getKey(), i.getValue()));
+    public void release(Long orderId, Map<Long, Integer> productsQnt) {
+        productsQnt.entrySet().forEach(i -> release(orderId, i.getKey(), i.getValue()));
     }
 
-    public ProductDto release(Long id, Integer qnt) {
+    private ProductDto release(Long orderId, Long id, Integer qnt) {
         Assert.notNull(qnt, "Qnt is null");
         Assert.isTrue(qnt.intValue() > 0, "Wrong qnt");
 
@@ -151,7 +159,7 @@ public class ProductService {
         }
     }
 
-    public Object get(Long id) {
+    public ProductDto get(Long id) {
         Optional<Product> res = productRepository.findById(id);
         if (res.isPresent()) {
             Product product = res.get();
