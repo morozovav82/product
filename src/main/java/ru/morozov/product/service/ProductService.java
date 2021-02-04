@@ -55,7 +55,7 @@ public class ProductService {
 
             //проверки при уменьшении товара
             if (qnt < 0) {
-                Assert.isTrue(product.getFreeQnt() >= -qnt, "Not enough free products. FreeQnt=" + product.getFreeQnt());
+                Assert.isTrue(product.getFreeQnt() >= -qnt, "Not enough free products. ProductID=" + product.getId() + ", FreeQnt=" + product.getFreeQnt());
             }
 
             product.setQuantity(product.getQuantity() + qnt);
@@ -78,7 +78,7 @@ public class ProductService {
         Optional<Product> res = productRepository.findById(id);
         if (res.isPresent()) {
             Product product = res.get();
-            Assert.isTrue(product.getReserved() >= qnt, "Not enough reserved products. ReservedQnt=" + product.getReserved());
+            Assert.isTrue(product.getReserved() >= qnt, "Not enough reserved products. ProductID=" + product.getId() + ", ReservedQnt=" + product.getReserved());
 
             product.setQuantity(product.getQuantity() - qnt);
             product.setReserved(product.getReserved() - qnt);
@@ -101,7 +101,7 @@ public class ProductService {
         Optional<Product> res = productRepository.findById(id);
         if (res.isPresent()) {
             Product product = res.get();
-            Assert.isTrue(product.getFreeQnt() >= qnt, "Not enough free products. FreeQnt=" + product.getFreeQnt());
+            Assert.isTrue(product.getFreeQnt() >= qnt, "Not enough free products. ProductID=" + product.getId() + ", FreeQnt=" + product.getFreeQnt());
 
             product.setReserved(product.getReserved() + qnt);
             productRepository.save(product);
@@ -123,7 +123,7 @@ public class ProductService {
         Optional<Product> res = productRepository.findById(id);
         if (res.isPresent()) {
             Product product = res.get();
-            Assert.isTrue(product.getReserved() >= qnt, "Not enough reserved products. ReservedQnt=" + product.getReserved());
+            Assert.isTrue(product.getReserved() >= qnt, "Not enough reserved products. ProductID=" + product.getId() + ", ReservedQnt=" + product.getReserved());
 
             product.setReserved(product.getReserved() - qnt);
             productRepository.save(product);
@@ -145,6 +145,16 @@ public class ProductService {
             product.setPrice(price);
             productRepository.save(product);
 
+            return ProductMapper.convertProductToProductDto(product);
+        } else {
+            throw new NotFoundException(id);
+        }
+    }
+
+    public Object get(Long id) {
+        Optional<Product> res = productRepository.findById(id);
+        if (res.isPresent()) {
+            Product product = res.get();
             return ProductMapper.convertProductToProductDto(product);
         } else {
             throw new NotFoundException(id);

@@ -24,6 +24,19 @@ public class ProductController {
         return productService.create(product);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDto> info(@PathVariable("id") Long id) {
+        try {
+            return new ResponseEntity(
+                    productService.get(id),
+                    HttpStatus.OK
+            );
+        } catch (NotFoundException e) {
+            log.warn(e.getMessage());
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PutMapping("/{id}/addQnt")
     public ResponseEntity<ProductDto> addQnt(@PathVariable("id") Long id, @RequestParam Integer qnt) {
         try {

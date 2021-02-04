@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
-import ru.morozov.messages.SagaReserveProductMsg;
+import ru.morozov.messages.SagaReserveProductRollbackMsg;
 import ru.morozov.product.service.ProductService;
 
 import javax.jms.Message;
@@ -38,7 +38,7 @@ public class SagaReserveProductRollbackConsumer implements MessageListener {
         if (objectMessage == null) return;
 
         try {
-            SagaReserveProductMsg msg = (SagaReserveProductMsg) objectMessage.getObject();
+            SagaReserveProductRollbackMsg msg = (SagaReserveProductRollbackMsg) objectMessage.getObject();
             productService.release(msg.getProductsQnt());
         } catch (Exception e) {
             log.error("Failed to save products", e);
