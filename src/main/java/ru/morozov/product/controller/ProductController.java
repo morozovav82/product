@@ -10,7 +10,7 @@ import ru.morozov.product.dto.ProductDto;
 import ru.morozov.product.exceptions.NotFoundException;
 import ru.morozov.product.service.ProductService;
 
-@RestController()
+@RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
 @Slf4j

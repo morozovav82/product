@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.morozov.messages.SagaReserveProductMsg;
 import ru.morozov.messages.SagaReserveProductRollbackMsg;
 
-@RestController()
+@RestController
 @RequestMapping("/product/tests")
 @RequiredArgsConstructor
 @Slf4j
@@ -19,10 +19,10 @@ public class TestController {
     private JmsTemplate jmsTemplate;
 
     @Value("${active-mq.SagaReserveProduct-topic}")
-    private String sagaReserveProduct;
+    private String sagaReserveProductTopic;
 
     @Value("${active-mq.SagaReserveProductRollback-topic}")
-    private String sagaReserveProductRollback;
+    private String sagaReserveProductRollbackTopic;
 
     private void sendMessage(String topic, Object message){
         try{
@@ -36,11 +36,11 @@ public class TestController {
 
     @PostMapping("/sendSagaReserveProductMsg")
     public void sendSagaReserveProductMsg(@RequestBody SagaReserveProductMsg message) {
-        sendMessage(sagaReserveProduct, message);
+        sendMessage(sagaReserveProductTopic, message);
     }
 
     @PostMapping("/sendSagaReserveProductRollbackMsg")
     public void sendSagaReserveProductRollbackMsg(@RequestBody SagaReserveProductRollbackMsg message) {
-        sendMessage(sagaReserveProductRollback, message);
+        sendMessage(sagaReserveProductRollbackTopic, message);
     }
 }
