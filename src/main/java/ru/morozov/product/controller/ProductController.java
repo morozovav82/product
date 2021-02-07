@@ -11,20 +11,20 @@ import ru.morozov.product.exceptions.NotFoundException;
 import ru.morozov.product.service.ProductService;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping
 @RequiredArgsConstructor
 @Slf4j
 public class ProductController {
 
     private final ProductService productService;
 
-    @PostMapping("")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDto create(@RequestBody NewProductDto product) {
         return productService.create(product);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:\\d+}")
     public ResponseEntity<ProductDto> info(@PathVariable("id") Long id) {
         try {
             return new ResponseEntity(
@@ -37,7 +37,7 @@ public class ProductController {
         }
     }
 
-    @PutMapping("/{id}/addQnt")
+    @PutMapping("/{id:\\d+}/addQnt")
     public ResponseEntity<ProductDto> addQnt(@PathVariable("id") Long id, @RequestParam Integer qnt) {
         try {
             return new ResponseEntity(
@@ -50,7 +50,7 @@ public class ProductController {
         }
     }
 
-    @PutMapping("/{id}/setPrice")
+    @PutMapping("/{id:\\d+}/setPrice")
     public ResponseEntity<ProductDto> setPrice(@PathVariable("id") Long id, @RequestParam Float price) {
         try {
             return new ResponseEntity(
