@@ -106,7 +106,7 @@ public class ProductService {
         Optional<Product> res = productRepository.findById(id);
         if (res.isPresent()) {
             Product product = res.get();
-            if (product.getFreeQnt() >= qnt) {
+            if (product.getFreeQnt() < qnt) {
                 productProducer.sendNotEnoughProductMessage(new NotEnoughProductMsg(orderId));
                 throw new IllegalArgumentException("Not enough free products. ProductID=" + product.getId() + ", FreeQnt=" + product.getFreeQnt());
             }

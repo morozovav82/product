@@ -12,4 +12,8 @@ public class ProductDto extends NewProductDto {
     private Float price;
     private Integer quantity;
     private Integer reserved;
+
+    public Integer getFreeQnt() {
+        return quantity - reserved;
+    }
 }

@@ -48,7 +48,7 @@ spec:
           - "-c"
           - |
             psql $DATABASE_URI <<'EOF'
-              drop table if exists products;
+              --drop table if exists products;
               create table products (id serial not null, name varchar(100) not null, description varchar(100), price float, status varchar(10) not null, quantity int not null, reserved int not null);
             EOF
 
