@@ -18,6 +18,7 @@ active-mq:
   SagaReserveProductRollback-topic: SagaReserveProductRollback
   ProductReserved-topic: ProductReserved
   NotEnoughProduct-topic: NotEnoughProduct
+  ProductSold-topic: ProductSold
 
 #настройка actuator
 management:

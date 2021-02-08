@@ -75,7 +75,7 @@ public class ProductService {
         productsQnt.entrySet().forEach(i -> sold(i.getKey(), i.getValue()));
     }
 
-    public ProductDto sold(Long id, Integer qnt) {
+    private ProductDto sold(Long id, Integer qnt) {
         Assert.notNull(qnt, "Qnt is null");
         Assert.isTrue(qnt.intValue() > 0, "Wrong qnt");
 
