@@ -10,7 +10,7 @@ import ru.morozov.messages.SagaReserveProductMsg;
 import ru.morozov.messages.SagaReserveProductRollbackMsg;
 
 @RestController
-@RequestMapping("/product/tests")
+@RequestMapping("/tests")
 @RequiredArgsConstructor
 @Slf4j
 public class TestController {
