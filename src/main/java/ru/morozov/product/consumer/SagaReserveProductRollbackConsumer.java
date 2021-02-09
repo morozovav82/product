@@ -2,46 +2,27 @@ package ru.morozov.product.consumer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jms.annotation.JmsListener;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import ru.morozov.messages.SagaReserveProductRollbackMsg;
 import ru.morozov.product.service.ProductService;
 
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.ObjectMessage;
-
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class SagaReserveProductRollbackConsumer implements MessageListener {
+@RabbitListener(queues = "${active-mq.SagaReserveProductRollback-topic}")
+public class SagaReserveProductRollbackConsumer {
 
     private final ProductService productService;
 
-    private ObjectMessage receiveMessage(Message message) {
-        ObjectMessage objectMessage;
-
+    @RabbitHandler
+    public void receive(SagaReserveProductRollbackMsg msg) {
+        log.info("Received Message: {}", msg.toString());
         try {
-            objectMessage = (ObjectMessage) message;
-            log.info("Received Message: {}", objectMessage.getObject().toString());
-            return objectMessage;
-        } catch (Exception e) {
-            log.error("Failed to receive message", e);
-            return null;
-        }
-    }
-
-    @Override
-    @JmsListener(destination = "${active-mq.SagaReserveProductRollback-topic}")
-    public void onMessage(Message message) {
-        ObjectMessage objectMessage = receiveMessage(message);
-        if (objectMessage == null) return;
-
-        try {
-            SagaReserveProductRollbackMsg msg = (SagaReserveProductRollbackMsg) objectMessage.getObject();
             productService.release(msg.getOrderId(), msg.getProductsQnt());
         } catch (Exception e) {
-            log.error("Failed to save products", e);
+            log.error("Failed to save product", e);
         }
     }
 }
