@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findOneByName(String name);
+    List<Product> findByStatus(String status);
 
     @Query("select p from products p where p.status=:status and (p.name like %:name% or p.description like %:description%)")
     List<Product> search(@Param("name") String name, @Param("description") String description, @Param("status") String status);

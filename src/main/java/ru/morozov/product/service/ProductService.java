@@ -185,7 +185,12 @@ public class ProductService {
     }
 
     public List<ProductDto> search(String name, String description, String status) {
-        List<Product> products = productRepository.search(name, description, status);
+        List<Product> products;
+
+        if (StringUtils.hasText(name) || StringUtils.hasText(description))
+            products = productRepository.search(name, description, status);
+        else
+            products = productRepository.findByStatus(status);
 
         return products.stream()
                 .map(i -> ProductMapper.convertProductToProductDto(i))
