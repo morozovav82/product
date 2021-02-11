@@ -17,8 +17,10 @@ import ru.morozov.product.exceptions.NotFoundException;
 import ru.morozov.product.producer.ProductProducer;
 import ru.morozov.product.repo.ProductRepository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -167,5 +169,26 @@ public class ProductService {
         } else {
             throw new NotFoundException(id);
         }
+    }
+
+    public ProductDto update(Long id, NewProductDto productDto) {
+        Optional<Product> res = productRepository.findById(id);
+        if (res.isPresent()) {
+            Product product = res.get();
+            product.setName(productDto.getName());
+            product.setDescription(productDto.getDescription());
+            product.setStatus(productDto.getStatus());
+            return ProductMapper.convertProductToProductDto(product);
+        } else {
+            throw new NotFoundException(id);
+        }
+    }
+
+    public List<ProductDto> search(String name, String description, String status) {
+        List<Product> products = productRepository.search(name, description, status);
+
+        return products.stream()
+                .map(i -> ProductMapper.convertProductToProductDto(i))
+                .collect(Collectors.toList());
     }
 }
