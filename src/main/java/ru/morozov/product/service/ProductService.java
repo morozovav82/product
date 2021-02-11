@@ -33,7 +33,7 @@ public class ProductService {
 
     public ProductDto create(NewProductDto product) {
         Assert.hasText(product.getName(), "Empty name");
-        Assert.isTrue(!productRepository.findOneByName(product.getName()).isPresent(), "Name already exists");
+//        Assert.isTrue(!productRepository.findOneByName(product.getName()).isPresent(), "Name already exists");
 
         if (!StringUtils.hasText(product.getStatus())) {
             product.setStatus(Status.ACTIVE.name());
