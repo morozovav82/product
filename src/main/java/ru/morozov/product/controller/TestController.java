@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.morozov.messages.ProductSoldMsg;
+import ru.morozov.messages.OrderDoneMsg;
 import ru.morozov.messages.SagaReserveProductMsg;
 import ru.morozov.messages.SagaReserveProductRollbackMsg;
 
@@ -52,7 +52,7 @@ public class TestController {
     }
 
     @PostMapping("/sendProductSoldMsg")
-    public void sendProductSoldMsg(@RequestBody ProductSoldMsg message) {
+    public void sendProductSoldMsg(@RequestBody OrderDoneMsg message) {
         sendMessage(productSoldTopic, message);
     }
 }

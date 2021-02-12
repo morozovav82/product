@@ -21,6 +21,7 @@ active-mq:
   ProductReserved-topic: ProductReserved
   NotEnoughProduct-topic: NotEnoughProduct
   ProductSold-topic: ProductSold
+  OrderDone-exchange: OrderDoneExchange
 
 #настройка actuator
 management:

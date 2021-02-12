@@ -1,9 +1,13 @@
 package ru.morozov.product.config;
 
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.amqp.core.Queue;
 
 @Configuration
 public class MqConfig {
@@ -13,6 +17,9 @@ public class MqConfig {
 
     @Value("${active-mq.SagaReserveProductRollback-topic}")
     private String sagaReserveProductRollbackTopic;
+
+    @Value("${active-mq.OrderDone-exchange}")
+    private String orderDoneExchange;
 
     @Value("${active-mq.ProductSold-topic}")
     private String productSoldTopic;
@@ -46,5 +53,15 @@ public class MqConfig {
     @Bean
     public Queue notEnoughProductQueue() {
         return new Queue(notEnoughProductTopic);
+    }
+
+    @Bean
+    TopicExchange orderDoneExchange() {
+        return new TopicExchange(orderDoneExchange);
+    }
+
+    @Bean
+    Binding binding(@Qualifier("productSoldQueue") Queue queue, @Qualifier("orderDoneExchange") TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with("default");
     }
 }

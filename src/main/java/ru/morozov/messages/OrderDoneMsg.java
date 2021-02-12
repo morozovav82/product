@@ -12,8 +12,9 @@ import java.util.Map;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductSoldMsg implements Serializable {
+public class OrderDoneMsg implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private Long orderId;
     private Map<Long, Integer> productsQnt; //ProductId -> Qnt
 }
