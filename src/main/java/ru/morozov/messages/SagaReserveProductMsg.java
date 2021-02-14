@@ -1,8 +1,6 @@
 package ru.morozov.messages;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -10,6 +8,8 @@ import java.util.Map;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class SagaReserveProductMsg implements Serializable {
     private static final long serialVersionUID = 1L;
 
