@@ -3,12 +3,14 @@ package ru.morozov.product.producer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.morozov.messages.NotEnoughProductMsg;
 import ru.morozov.messages.ProductReservedMsg;
 import ru.morozov.product.service.MessageService;
 
-@Component
+@Service
 @Slf4j
 public class ProductProducer {
 
@@ -25,6 +27,7 @@ public class ProductProducer {
         messageService.scheduleSentMessage(productReservedTopic, null, message, ProductReservedMsg.class);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void sendNotEnoughProductMessage(NotEnoughProductMsg message){
         messageService.scheduleSentMessage(notEnoughProductTopic, null, message, NotEnoughProductMsg.class);
     }
