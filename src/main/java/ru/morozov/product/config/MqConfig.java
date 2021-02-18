@@ -12,22 +12,22 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MqConfig {
 
-    @Value("${active-mq.SagaReserveProduct-topic}")
+    @Value("${mq.SagaReserveProduct-topic}")
     private String sagaReserveProductTopic;
 
-    @Value("${active-mq.SagaReserveProductRollback-topic}")
+    @Value("${mq.SagaReserveProductRollback-topic}")
     private String sagaReserveProductRollbackTopic;
 
-    @Value("${active-mq.OrderDone-exchange}")
+    @Value("${mq.OrderDone-exchange}")
     private String orderDoneExchange;
 
-    @Value("${active-mq.ProductSold-topic}")
+    @Value("${mq.ProductSold-topic}")
     private String productSoldTopic;
 
-    @Value("${active-mq.ProductReserved-topic}")
+    @Value("${mq.ProductReserved-topic}")
     private String productReservedTopic;
 
-    @Value("${active-mq.NotEnoughProduct-topic}")
+    @Value("${mq.NotEnoughProduct-topic}")
     private String notEnoughProductTopic;
 
     @Bean

@@ -16,7 +16,7 @@ spring:
 app.basePath:
 users.url: ${USERS_URL}
 
-active-mq:
+mq:
   SagaReserveProduct-topic: SagaReserveProduct
   SagaReserveProductRollback-topic: SagaReserveProductRollback
   ProductReserved-topic: ProductReserved

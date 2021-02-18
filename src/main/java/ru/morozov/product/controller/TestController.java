@@ -22,13 +22,13 @@ public class TestController {
     @Autowired
     private MessageService messageService;
 
-    @Value("${active-mq.SagaReserveProduct-topic}")
+    @Value("${mq.SagaReserveProduct-topic}")
     private String sagaReserveProductTopic;
 
-    @Value("${active-mq.SagaReserveProductRollback-topic}")
+    @Value("${mq.SagaReserveProductRollback-topic}")
     private String sagaReserveProductRollbackTopic;
 
-    @Value("${active-mq.ProductSold-topic}")
+    @Value("${mq.ProductSold-topic}")
     private String productSoldTopic;
 
     @PostMapping("/sendSagaReserveProductMsg")

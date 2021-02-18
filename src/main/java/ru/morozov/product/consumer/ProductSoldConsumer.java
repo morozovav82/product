@@ -11,7 +11,7 @@ import ru.morozov.product.service.ProductService;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-@RabbitListener(queues = "${active-mq.ProductSold-topic}")
+@RabbitListener(queues = "${mq.ProductSold-topic}")
 public class ProductSoldConsumer {
 
     private final ProductService productService;

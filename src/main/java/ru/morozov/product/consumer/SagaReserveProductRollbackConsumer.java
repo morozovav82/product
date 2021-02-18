@@ -11,7 +11,7 @@ import ru.morozov.product.service.ProductService;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-@RabbitListener(queues = "${active-mq.SagaReserveProductRollback-topic}")
+@RabbitListener(queues = "${mq.SagaReserveProductRollback-topic}")
 public class SagaReserveProductRollbackConsumer {
 
     private final ProductService productService;

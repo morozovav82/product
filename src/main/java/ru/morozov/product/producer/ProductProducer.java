@@ -17,10 +17,10 @@ public class ProductProducer {
     @Autowired
     private MessageService messageService;
 
-    @Value("${active-mq.ProductReserved-topic}")
+    @Value("${mq.ProductReserved-topic}")
     private String productReservedTopic;
 
-    @Value("${active-mq.NotEnoughProduct-topic}")
+    @Value("${mq.NotEnoughProduct-topic}")
     private String notEnoughProductTopic;
 
     public void sendProductReservedMessage(ProductReservedMsg message){

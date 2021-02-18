@@ -12,7 +12,7 @@ import ru.morozov.product.service.ProductService;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-@RabbitListener(queues = "${active-mq.SagaReserveProduct-topic}")
+@RabbitListener(queues = "${mq.SagaReserveProduct-topic}")
 public class SagaReserveProductConsumer {
 
     private final ProductService productService;
