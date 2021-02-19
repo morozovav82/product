@@ -50,9 +50,13 @@ spec:
             psql $DATABASE_URI <<'EOF'
               --drop table if exists products;
               create table if not exists products (id serial not null, name varchar(100) not null, description varchar(100), price float, status varchar(10) not null, quantity int not null, reserved int not null);
+              --alter table users drop constraint products_pk;
+              alter table products add constraint products_pk unique (id);
 
               --drop table if exists product_messages;
               create table if not exists product_messages (id serial not null, sent timestamp, topic varchar(100), routing_key varchar(100), message text, class_name varchar(500));
+              --alter table users drop constraint product_messages;
+              alter table users add constraint product_messages unique (id);
             EOF
 
   backoffLimit: 0
